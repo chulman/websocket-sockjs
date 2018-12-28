@@ -1,0 +1,25 @@
+
+buildscript {
+    ext {
+        springBootVersion = '2.0.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+    }
+}
+
+subprojects {
+    repositories {
+        mavenCentral()
+    }
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    group = 'com.websocket.chulm'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = 1.8
+}
