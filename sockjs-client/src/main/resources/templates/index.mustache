@@ -1,0 +1,58 @@
+{{> layout/header}}
+
+<h1>singleConnect</h1>
+
+
+<div class="row">
+    <div class="col-md-2">
+        <h3>IP & PORT</h3>
+        <input type="email" id="ip" class="form-control" placeholder="IP" required autofocus value="https://localhost">
+        <input type="email" id="port" class="form-control" placeholder="PORT" required autofocus value="8081">
+        <button type="button" class="btn btn-default" onclick="do_sockjs_connect()">sockjs connect</button>
+    </div>
+
+    <div class="col-md-2">
+
+        <h3>ID & PW</h3>
+        <input type="email" id="userId" class="form-control" placeholder="user id" required value="">
+        <input type="email" id="password" class="form-control" placeholder="password" required value="">
+        <button type="button" class="btn btn-success" onclick="do_xpush_AUTH()">AUTH</button>
+        <button type="button" class="btn btn-danger" onclick="do_xpush_BYEC()">BYEC</button>
+    </div>
+
+    <div class="col-md-2">
+        <h3>TOPIC</h3>
+        <input type="email" id="topicType" class="form-control" placeholder="TOPIC type" required autofocus value="NOTI">
+        <input type="email" id="topicId" class="form-control" placeholder="TOPIC ID" required autofocus value="ALL">
+        <button type="button" class="btn btn-default" onclick="do_xpush_ADDF()">ADDF</button>
+        <button type="button" class="btn btn-default" onclick="do_xpush_DELF()">DELF</button>
+    </div>
+
+    <div class="col-md-2">
+        <h3>TOPIC</h3>
+        <input type="email" id="messageID" class="form-control" placeholder="TOPIC type" required autofocus value="messageID">
+        <button type="button" class="btn btn-default" onclick="do_xpush_ACKN()">ACKN</button>
+    </div>
+</div>
+
+<hr>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_KEEP_S()" >KEEP_S</button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_KEEP_C()" >KEEP_C</button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_REQD()"   >REQD  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_RECT()"   >RECT  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_MSGC()"   >MSGC  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_ADUI()"   >ADUI  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_UNUI()"  >UNUI  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_RGST()"   >RGST  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_UNRG()"  >UNRG  </button>
+<button type="button" class="btn btn-lg btn-default" onclick="do_xpush_ACKN()"  >ACKN </button>
+<hr>
+
+<div class="form-group">
+    <label for="comment">Comment:</label>
+    <textarea class="form-control" rows="10" id="comment"></textarea>
+    <button type="button" class="btn btn-default" onclick="do_textArea_clear()">text clear</button>
+</div>
+
+
+{{> layout/footer}}

@@ -1,14 +1,13 @@
-description 'websocket-echo-server'
+description 'websocket-sockjs-client'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 jar {
-    archiveName = 'spring-server.jar'
+    archiveName = 'sockjs-client.jar'
 }
 
 dependencies {
+    compile('org.springframework.boot:spring-boot-starter-mustache')
     compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-websocket')
-    compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }
