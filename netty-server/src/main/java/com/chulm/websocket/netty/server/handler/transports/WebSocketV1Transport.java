@@ -4,7 +4,7 @@ import com.chulm.websocket.netty.server.frame.Frame;
 import com.chulm.websocket.netty.server.frame.SockJsMessage;
 import com.chulm.websocket.netty.server.handler.session.Session;
 import com.chulm.websocket.netty.server.handler.session.SessionManager;
-import com.chulm.websocket.netty.server.utils.SockJsResponse;
+import com.chulm.websocket.netty.server.response.SockJsResponse;
 import com.chulm.websocket.netty.server.utils.UrlUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

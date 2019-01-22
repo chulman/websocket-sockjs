@@ -1,4 +1,4 @@
-package com.chulm.websocket.netty.server.utils;
+package com.chulm.websocket.netty.server.response;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;

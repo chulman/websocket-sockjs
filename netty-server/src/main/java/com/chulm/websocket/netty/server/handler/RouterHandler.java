@@ -1,7 +1,7 @@
 package com.chulm.websocket.netty.server.handler;
 
 import com.chulm.websocket.netty.server.handler.transports.SockJsTransport;
-import com.chulm.websocket.netty.server.utils.SockJsResponse;
+import com.chulm.websocket.netty.server.response.SockJsResponse;
 import com.chulm.websocket.netty.server.utils.UrlUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
