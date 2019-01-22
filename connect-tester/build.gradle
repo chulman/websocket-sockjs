@@ -1,0 +1,11 @@
+description 'websocket-tester'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+jar {
+    archiveName = 'connect-tester.jar'
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+}

@@ -20,6 +20,11 @@ function do_sockjs_stomp_connect() {
 
     var socket = new SockJS(sockjs_url);
     stompClient = Stomp.over(socket);
+
+
+    stompClient.heartbeat.outgoing = 5000; // client will send heartbeats every 3000ms
+    stompClient.heartbeat.incoming = 5000;     // client does not want to receive heartbeats from the server
+
     stompClient.connect({}, function (frame) {
         setStompConnected(true);
         console.log('Connected: ' + frame);

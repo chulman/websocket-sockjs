@@ -61,6 +61,11 @@ stompClient.send("/api/echo", {}, data);
 stompClient.disconnect();
 ```   
 
+- heartbeat (ping & pong)
+```js
+stompClient.heartbeat.outgoing = 5000; 
+stompClient.heartbeat.incoming = 5000;    
+```
 
 
 ## Usage SockJs With STOMP
@@ -124,7 +129,7 @@ Cache-Control: no-cache..
 Upgrade: websocket....
 ````
 
-4 . response upgrade 
+4 . response upgrade and handshake
 
 ````
 HTTP/1.1 101 Switching Protocols.. Server: Apache-Coyote/1.1..
@@ -134,7 +139,7 @@ Sec-WebSocket-Accept: ymWqxWoBvll5eKUcrQGmm1GNRnQ=..
 Date:Wed, 30 Mar 2016 04:34:05 GMT....
 ````
 
-5 . handshake
+## frame
 
 - open frame
 
@@ -143,8 +148,19 @@ Date:Wed, 30 Mar 2016 04:34:05 GMT....
 ````
 
 - heartbeat frame 
-
+  + session check with heartbeat / ping / pong
+  + session close, not disconnect.
 ````
 81 01 68 : ..h
 ````
  
+ - OpCode
+ 
+ ````
+ continue = 0x0
+ text = 0x1
+ binary = 0x2
+ close: 0x8
+ Ping: 0x9
+ Pong: 0xA
+ ````
