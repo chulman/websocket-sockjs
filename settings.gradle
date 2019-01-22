@@ -1,6 +1,6 @@
 rootProject.name = 'websocket'
 
+include 'connect-tester'
 include 'spring-server'
 include 'netty-server'
-include 'netty-client'
 include 'sockjs-client'

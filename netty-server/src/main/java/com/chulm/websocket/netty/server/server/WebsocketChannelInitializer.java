@@ -1,5 +1,11 @@
 package com.chulm.websocket.netty.server.server;
 
+import com.chulm.websocket.netty.server.handler.PreflightHandler;
+import com.chulm.websocket.netty.server.handler.RouterHandler;
+import com.chulm.websocket.netty.server.handler.TransportHandler;
+import com.chulm.websocket.netty.server.handler.transports.SockJsTransport;
+import com.chulm.websocket.netty.server.handler.transports.WebSocketV1Transport;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -17,7 +23,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -30,11 +35,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@ChannelHandler.Sharable
 @Slf4j
 @Data
-public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class WebsocketChannelInitializer extends ChannelInitializer<SocketChannel> {
 
-    private String serviceDomain;
+    private String wsPath;
     private long timeout;
     private long port;
 
@@ -42,24 +48,25 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
     private String certPath = null;
     private String certPassword = null;
 
+
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
         log.info("initializer Handler" + channel);
 
         ChannelPipeline pipeline = channel.pipeline();
-		pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.DEBUG));
+        pipeline.addLast("loggingHandler", new LoggingHandler(LogLevel.DEBUG));
 
-        if(isHttps()) {
+        if (isHttps()) {
             SSLEngine engine = getServerSSLContext(getCertPath(), getCertPassword()).createSSLEngine();
 
             String enabledCipherSuites[] = engine.getEnabledCipherSuites();
             List<String> cipherSuites = new ArrayList<String>(Arrays.asList(enabledCipherSuites));
-            for(String cipher : enabledCipherSuites) {
-                if(cipher.contains("DHE")) {
+            for (String cipher : enabledCipherSuites) {
+                if (cipher.contains("DHE")) {
                     cipherSuites.remove(cipher);
                 }
             }
-            enabledCipherSuites = (String[])cipherSuites.toArray(new String[cipherSuites.size()]);
+            enabledCipherSuites = (String[]) cipherSuites.toArray(new String[cipherSuites.size()]);
             engine.setEnabledCipherSuites(enabledCipherSuites);
 
             engine.setUseClientMode(false);
@@ -71,14 +78,16 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
         pipeline.addLast("httpObjectAggregator", new HttpObjectAggregator(1048576));
         pipeline.addLast("chunkedWriteHandler", new ChunkedWriteHandler());
         pipeline.addLast("preflightHandler", new PreflightHandler());
+        pipeline.addLast("routerHandler", new RouterHandler(wsPath, isHttps,configureTransport()));
+        pipeline.addLast("transportHandler", new TransportHandler(configureTransport()));
+    }
 
-        final ServiceRouter serviceRouter = new ServiceRouter();
-        serviceRouter.setSessionManager(getSessionMap());
-        serviceRouter.setServiceDomain(getServiceDomain());
-        serviceRouter.setTimeout(getTimeout());
-        serviceRouter.setPort(getPort());
 
-        pipeline.addLast(serviceRouter);
+    private SockJsTransport configureTransport() {
+
+        SockJsTransport transport = new WebSocketV1Transport();
+        return transport;
+
     }
 
     public SSLContext getServerSSLContext(String path, String password) throws KeyStoreException, IOException, KeyManagementException, CertificateException, NoSuchAlgorithmException, UnrecoverableKeyException {
@@ -87,16 +96,16 @@ public class ServerChannelInitializer extends ChannelInitializer<SocketChannel> 
             algorithm = "SunX509";
         }
         SSLContext serverContext = null;
-            KeyStore ks;
-            ks = KeyStore.getInstance("JKS");
-            ks.load( new FileInputStream(path), password.toCharArray() );
+        KeyStore ks;
+        ks = KeyStore.getInstance("JKS");
+        ks.load(new FileInputStream(path), password.toCharArray());
 
-            KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
-            kmf.init(ks, password.toCharArray());
+        KeyManagerFactory kmf = KeyManagerFactory.getInstance(algorithm);
+        kmf.init(ks, password.toCharArray());
 
-            // Initialize the SSLContext to work with our key managers.
-            serverContext = SSLContext.getInstance("TLS");
-            serverContext.init(kmf.getKeyManagers(), null, null);
+        // Initialize the SSLContext to work with our key managers.
+        serverContext = SSLContext.getInstance("TLS");
+        serverContext.init(kmf.getKeyManagers(), null, null);
 
         return serverContext;
     }

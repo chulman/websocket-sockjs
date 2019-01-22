@@ -1,4 +1,4 @@
-package com.chulm.websocket.netty.server.transports;
+package com.chulm.websocket.netty.server.handler.transports;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;

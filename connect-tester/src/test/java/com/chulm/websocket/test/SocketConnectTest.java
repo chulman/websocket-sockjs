@@ -1,36 +1,18 @@
 package com.chulm.websocket.test;
 
-import java.io.BufferedInputStream;
-
-import java.io.BufferedReader;
-
-import java.io.IOException;
-
-import java.io.InputStreamReader;
-
-import java.io.OutputStream;
-
+import javax.security.cert.CertificateException;
+import java.io.*;
 import java.net.InetSocketAddress;
-
 import java.net.Socket;
-
 import java.net.URISyntaxException;
-
 import java.nio.ByteBuffer;
-
 import java.nio.LongBuffer;
-
 import java.security.cert.CertificateEncodingException;
-
 import java.util.Base64;
-
 import java.util.UUID;
 
 
-import javax.security.cert.CertificateException;
-
-
-public class Main {
+public class SocketConnectTest {
 
 
     private final static String charName = "UTF-8";
@@ -54,13 +36,13 @@ public class Main {
 
         Socket sock = new Socket();
 
-        sock.connect(new InetSocketAddress("localhost", 8080));
+        sock.connect(new InetSocketAddress("localhost", 8082));
 
 
         OutputStream os = sock.getOutputStream();
 
 
-        os.write(("GET /ws/info?t=" + System.currentTimeMillis() + " HTTP/1.1" + "\n").getBytes(charName));
+        os.write(("GET /ws-handler/info?t=" + System.currentTimeMillis() + " HTTP/1.1" + "\n").getBytes(charName));
 
         os.write(("Connection: KeepAlive\n").getBytes(charName));
 
@@ -110,13 +92,14 @@ public class Main {
 
         Socket sock2 = new Socket();
 
-        sock2.connect(new InetSocketAddress("localhost", 8080));
+        sock2.connect(new InetSocketAddress("localhost", 8082));
 
 
         os = sock2.getOutputStream();
 
-        os.write(("GET /ws/open/v1/" + System.currentTimeMillis()  + " HTTP/1.1" + "\n").getBytes("UTF-8"));
+        ///ws/733/a1f0yayx/websocket
 
+        os.write(("GET /ws-handler/111/" + System.currentTimeMillis()+"/websocket"  + " HTTP/1.1" + "\n").getBytes("UTF-8"));
 
         os.write(("Connection: Upgrade\n").getBytes("UTF-8"));
 
