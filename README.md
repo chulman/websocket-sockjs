@@ -49,7 +49,7 @@ stompClient = Stomp.over(socket);
         });
     });
 ```
-- connect
+- send
    
 ```js
 var data = JSON.stringify(message);
