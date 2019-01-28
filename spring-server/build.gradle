@@ -7,8 +7,11 @@ jar {
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-websocket')
+    compile('org.springframework.boot:spring-boot-starter-integration')
+    compile('org.springframework.boot:spring-boot-starter-webflux')
+    compile("org.springframework.boot:spring-boot-starter-websocket") {
+        exclude module: "spring-boot-starter-tomcat"
+    }
     compileOnly('org.projectlombok:lombok')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

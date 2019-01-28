@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring 5 Reactive WebSocket microservice client</title>
+</head>
+<body>
+
+<div class="container"></div>
+<script>
+    var ws = new WebSocket("ws://localhost:8080/reactive/websocket");
+    ws.onopen = function() {
+        console.log("ws.onopen", ws);
+        console.log(ws.readyState, "websocketstatus");
+    }
+    ws.onclose = function(e) {
+        console.log("ws.onclose", ws, e);
+        updateContainer("Closing connection");
+    }
+    ws.onerror = function(e) {
+        console.log("ws.onerror", ws, e);
+        updateContainer("An error occured");
+    }
+    ws.onmessage = function(e) {
+        console.log("ws.onmessage", ws, e);
+        updateContainer(e.data);
+    }
+    function updateContainer(message) {
+        document.querySelector(".container").innerHTML += message + "<br>";
+    }
+</script>
+</body>
+</html>
