@@ -14,10 +14,10 @@
 
 **Browser** 
 
-- IE : 10
-- Chrome : 4
-- Safari : 5
-- FireFox : 6
+- IE : 11
+- Chrome : 65
+- Safari : 11
+
 
 
 **Server**
