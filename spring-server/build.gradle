@@ -7,6 +7,11 @@ jar {
 }
 
 dependencies {
+
+    compile('com.netflix.hystrix:hystrix-javanica:1.5.10')
+    compile('biz.paluch.redis:lettuce:4.4.4.Final')
+
+
     compile('org.springframework.boot:spring-boot-starter-integration')
     compile('org.springframework.boot:spring-boot-starter-webflux')
     compile("org.springframework.boot:spring-boot-starter-websocket") {

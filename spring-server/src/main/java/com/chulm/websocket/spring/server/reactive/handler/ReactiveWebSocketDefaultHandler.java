@@ -1,7 +1,9 @@
 package com.chulm.websocket.spring.server.reactive.handler;
 
+import com.chulm.websocket.spring.server.domain.repository.MessageCacheRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.socket.WebSocketHandler;
@@ -10,6 +12,7 @@ import org.springframework.web.reactive.socket.WebSocketSession;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.UnicastProcessor;
+import rx.Observable;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
@@ -21,6 +24,11 @@ public class ReactiveWebSocketDefaultHandler implements WebSocketHandler {
     private Flux<Long> messageFlux;
     private UnicastProcessor<Object> messagePublisher;
 
+    @Autowired
+    private MessageCacheRepository messageCacheRepository;
+
+
+    private final String id = "test";
     private final ObjectMapper mapper = new ObjectMapper();
     /**
      * Here we prepare a Flux that will emit a message every second
@@ -47,11 +55,17 @@ public class ReactiveWebSocketDefaultHandler implements WebSocketHandler {
      */
     @Override
     public Mono<Void> handle(WebSocketSession session) {
-        WebSocketMessageSubscriber subscriber = new WebSocketMessageSubscriber(messagePublisher);
+
+        Observable<Object> observable = messageCacheRepository.get(id);
+        WebSocketMessageSubscriber subscriber =  new WebSocketMessageSubscriber(messagePublisher,messageCacheRepository);
 
         session.receive()
                 .map(WebSocketMessage::getPayloadAsText)
                 .subscribe(subscriber::onNext, subscriber::onError, subscriber::onComplete);
+
+        observable.doOnNext(o -> {
+            System.err.println("Observer:" + o);
+        });
 
         return session.send(
                 messageFlux

@@ -24,7 +24,7 @@ public class ReactiveWebSocketConfig {
         map.put("/reactive/websocket", webSocketHandler);
 
         SimpleUrlHandlerMapping mapping = new SimpleUrlHandlerMapping();
-        mapping.setOrder(10);
+        mapping.setOrder(1);
         mapping.setUrlMap(map);
         return mapping;
     }

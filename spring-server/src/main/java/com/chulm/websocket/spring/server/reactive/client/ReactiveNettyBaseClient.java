@@ -28,7 +28,7 @@ public class ReactiveNettyBaseClient {
                                 .map(WebSocketMessage::getPayloadAsText)
                                 .log())
                         .then())
-                .block(Duration.ofSeconds(10L));
+                .block(Duration.ofSeconds(60*10l));
     }
 
 
